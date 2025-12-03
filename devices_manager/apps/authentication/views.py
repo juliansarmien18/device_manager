@@ -1,15 +1,16 @@
 """
 Authentication views.
 """
+
+from apps.authentication.serializers import (
+    PlatformTokenObtainPairSerializer,
+    RegisterSerializer,
+)
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
-from apps.authentication.serializers import (
-    RegisterSerializer,
-    PlatformTokenObtainPairSerializer,
-)
 
 
 class PlatformTokenObtainPairView(TokenObtainPairView):
@@ -21,7 +22,7 @@ class PlatformTokenObtainPairView(TokenObtainPairView):
     permission_classes = [AllowAny]
 
 
-@api_view(['POST'])
+@api_view(["POST"])
 @permission_classes([AllowAny])
 def register_view(request):
     """
@@ -32,12 +33,11 @@ def register_view(request):
         user_platform = serializer.save()
         return Response(
             {
-                'message': 'Usuario registrado exitosamente.',
-                'user_id': user_platform.id,
-                'email': user_platform.email,
-                'platform': user_platform.platform.name,
+                "message": "Usuario registrado exitosamente.",
+                "user_id": user_platform.id,
+                "email": user_platform.email,
+                "platform": user_platform.platform.name,
             },
             status=status.HTTP_201_CREATED,
         )
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-

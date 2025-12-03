@@ -15,4 +15,3 @@ services:
       - DJANGO_SETTINGS_MODULE=devices_manager.settings.dev
     stdin_open: true
     tty: true
-

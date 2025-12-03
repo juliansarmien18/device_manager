@@ -1,10 +1,11 @@
 """
 Platform views.
 """
-from rest_framework import viewsets
-from rest_framework.permissions import AllowAny
+
 from apps.platforms.models import Platform
 from apps.platforms.serializers import PlatformSerializer
+from rest_framework import viewsets
+from rest_framework.permissions import AllowAny
 
 
 class PlatformViewSet(viewsets.ReadOnlyModelViewSet):
@@ -15,4 +16,3 @@ class PlatformViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Platform.objects.filter(is_active=True)
     serializer_class = PlatformSerializer
     permission_classes = [AllowAny]
-

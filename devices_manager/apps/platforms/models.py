@@ -1,10 +1,11 @@
 """
 Platform models.
 """
-from django.contrib.auth.models import AbstractUser
-from django.db import models
-from django.core.validators import EmailValidator
+
 from apps.core.models import BaseModel
+from django.contrib.auth.models import AbstractUser
+from django.core.validators import EmailValidator
+from django.db import models
 
 
 class Platform(BaseModel):
@@ -12,14 +13,14 @@ class Platform(BaseModel):
     Platform model representing different platforms in the system.
     """
 
-    name = models.CharField(max_length=100, unique=True, verbose_name='Nombre')
-    description = models.TextField(blank=True, verbose_name='Descripción')
-    is_active = models.BooleanField(default=True, verbose_name='Activa')
+    name = models.CharField(max_length=100, unique=True, verbose_name="Nombre")
+    description = models.TextField(blank=True, verbose_name="Descripción")
+    is_active = models.BooleanField(default=True, verbose_name="Activa")
 
     class Meta:
-        verbose_name = 'Plataforma'
-        verbose_name_plural = 'Plataformas'
-        ordering = ['name']
+        verbose_name = "Plataforma"
+        verbose_name_plural = "Plataformas"
+        ordering = ["name"]
 
     def __str__(self):
         return self.name
@@ -35,29 +36,29 @@ class UserPlatform(BaseModel):
     email = models.EmailField(
         max_length=255,
         validators=[EmailValidator()],
-        verbose_name='Email',
+        verbose_name="Email",
         db_index=True,
     )
     platform = models.ForeignKey(
         Platform,
         on_delete=models.CASCADE,
-        related_name='user_platforms',
-        verbose_name='Plataforma',
+        related_name="user_platforms",
+        verbose_name="Plataforma",
     )
-    password = models.CharField(max_length=128, verbose_name='Contraseña')
-    is_active = models.BooleanField(default=True, verbose_name='Activo')
-    last_login = models.DateTimeField(null=True, blank=True, verbose_name='Último acceso')
+    password = models.CharField(max_length=128, verbose_name="Contraseña")
+    is_active = models.BooleanField(default=True, verbose_name="Activo")
+    last_login = models.DateTimeField(null=True, blank=True, verbose_name="Último acceso")
 
     class Meta:
-        verbose_name = 'Usuario de Plataforma'
-        verbose_name_plural = 'Usuarios de Plataforma'
-        unique_together = [['email', 'platform']]
+        verbose_name = "Usuario de Plataforma"
+        verbose_name_plural = "Usuarios de Plataforma"
+        unique_together = [["email", "platform"]]
         indexes = [
-            models.Index(fields=['email', 'platform']),
+            models.Index(fields=["email", "platform"]),
         ]
 
     def __str__(self):
-        return f'{self.email} - {self.platform.name}'
+        return f"{self.email} - {self.platform.name}"
 
     is_authenticated = True
     is_anonymous = False
@@ -80,6 +81,7 @@ class UserPlatform(BaseModel):
         Check password using Django's password hasher.
         """
         from django.contrib.auth.hashers import check_password
+
         return check_password(raw_password, self.password)
 
     def set_password(self, raw_password):
@@ -87,5 +89,5 @@ class UserPlatform(BaseModel):
         Set password using Django's password hasher.
         """
         from django.contrib.auth.hashers import make_password
-        self.password = make_password(raw_password)
 
+        self.password = make_password(raw_password)

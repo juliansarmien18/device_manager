@@ -1,16 +1,16 @@
 """
 Device URLs.
 """
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
+
 from apps.devices.views import DeviceViewSet
+from django.urls import include, path
+from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
-router.register(r'devices', DeviceViewSet, basename='device')
+router.register(r"devices", DeviceViewSet, basename="device")
 
-app_name = 'devices'
+app_name = "devices"
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path("", include(router.urls)),
 ]
-

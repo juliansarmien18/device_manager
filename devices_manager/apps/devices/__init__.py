@@ -1,4 +1,3 @@
 """
 Devices app.
 """
-

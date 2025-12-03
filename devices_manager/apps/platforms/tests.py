@@ -1,9 +1,10 @@
 """
 Tests for platforms app.
 """
-from django.test import TestCase
-from django.core.exceptions import ValidationError
+
 from apps.platforms.models import Platform, UserPlatform
+from django.core.exceptions import ValidationError
+from django.test import TestCase
 
 
 class PlatformModelTest(TestCase):
@@ -16,8 +17,8 @@ class PlatformModelTest(TestCase):
         Set up test data.
         """
         self.platform = Platform.objects.create(
-            name='Plataforma Test',
-            description='Descripción de prueba',
+            name="Plataforma Test",
+            description="Descripción de prueba",
             is_active=True,
         )
 
@@ -25,7 +26,7 @@ class PlatformModelTest(TestCase):
         """
         Test platform creation.
         """
-        self.assertEqual(self.platform.name, 'Plataforma Test')
+        self.assertEqual(self.platform.name, "Plataforma Test")
         self.assertTrue(self.platform.is_active)
         self.assertIsNotNone(self.platform.created_at)
 
@@ -33,14 +34,14 @@ class PlatformModelTest(TestCase):
         """
         Test platform string representation.
         """
-        self.assertEqual(str(self.platform), 'Plataforma Test')
+        self.assertEqual(str(self.platform), "Plataforma Test")
 
     def test_platform_unique_name(self):
         """
         Test that platform name must be unique.
         """
         with self.assertRaises(Exception):
-            Platform.objects.create(name='Plataforma Test')
+            Platform.objects.create(name="Plataforma Test")
 
 
 class UserPlatformModelTest(TestCase):
@@ -53,13 +54,13 @@ class UserPlatformModelTest(TestCase):
         Set up test data.
         """
         self.platform = Platform.objects.create(
-            name='Plataforma Test',
+            name="Plataforma Test",
             is_active=True,
         )
         self.user_platform = UserPlatform.objects.create(
-            email='test@example.com',
+            email="test@example.com",
             platform=self.platform,
-            password='hashed_password',
+            password="hashed_password",
             is_active=True,
         )
 
@@ -67,7 +68,7 @@ class UserPlatformModelTest(TestCase):
         """
         Test user platform creation.
         """
-        self.assertEqual(self.user_platform.email, 'test@example.com')
+        self.assertEqual(self.user_platform.email, "test@example.com")
         self.assertEqual(self.user_platform.platform, self.platform)
         self.assertTrue(self.user_platform.is_active)
 
@@ -75,7 +76,7 @@ class UserPlatformModelTest(TestCase):
         """
         Test user platform string representation.
         """
-        expected = f'{self.user_platform.email} - {self.platform.name}'
+        expected = f"{self.user_platform.email} - {self.platform.name}"
         self.assertEqual(str(self.user_platform), expected)
 
     def test_user_platform_unique_email_platform(self):
@@ -84,21 +85,20 @@ class UserPlatformModelTest(TestCase):
         """
         with self.assertRaises(Exception):
             UserPlatform.objects.create(
-                email='test@example.com',
+                email="test@example.com",
                 platform=self.platform,
-                password='another_password',
+                password="another_password",
             )
 
     def test_same_email_different_platforms(self):
         """
         Test that same email can exist in different platforms.
         """
-        platform2 = Platform.objects.create(name='Plataforma 2', is_active=True)
+        platform2 = Platform.objects.create(name="Plataforma 2", is_active=True)
         user_platform2 = UserPlatform.objects.create(
-            email='test@example.com',
+            email="test@example.com",
             platform=platform2,
-            password='hashed_password',
+            password="hashed_password",
         )
-        self.assertEqual(user_platform2.email, 'test@example.com')
+        self.assertEqual(user_platform2.email, "test@example.com")
         self.assertEqual(user_platform2.platform, platform2)
-

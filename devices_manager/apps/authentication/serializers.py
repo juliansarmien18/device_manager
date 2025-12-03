@@ -1,10 +1,11 @@
 """
 Authentication serializers.
 """
-from rest_framework import serializers
+
+from apps.platforms.models import Platform, UserPlatform
 from django.contrib.auth.password_validation import validate_password
 from django.utils import timezone
-from apps.platforms.models import Platform, UserPlatform
+from rest_framework import serializers
 
 
 class PlatformSerializer(serializers.ModelSerializer):
@@ -14,8 +15,8 @@ class PlatformSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Platform
-        fields = ['id', 'name', 'description', 'is_active', 'created_at', 'updated_at']
-        read_only_fields = ['id', 'created_at', 'updated_at']
+        fields = ["id", "name", "description", "is_active", "created_at", "updated_at"]
+        read_only_fields = ["id", "created_at", "updated_at"]
 
 
 class UserPlatformSerializer(serializers.ModelSerializer):
@@ -29,16 +30,16 @@ class UserPlatformSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserPlatform
         fields = [
-            'id',
-            'email',
-            'platform',
-            'platform_id',
-            'is_active',
-            'last_login',
-            'created_at',
-            'updated_at',
+            "id",
+            "email",
+            "platform",
+            "platform_id",
+            "is_active",
+            "last_login",
+            "created_at",
+            "updated_at",
         ]
-        read_only_fields = ['id', 'last_login', 'created_at', 'updated_at']
+        read_only_fields = ["id", "last_login", "created_at", "updated_at"]
 
 
 class RegisterSerializer(serializers.Serializer):
@@ -51,7 +52,7 @@ class RegisterSerializer(serializers.Serializer):
         write_only=True,
         required=True,
         validators=[validate_password],
-        style={'input_type': 'password'},
+        style={"input_type": "password"},
     )
     platform_id = serializers.IntegerField(required=True)
 
@@ -62,7 +63,7 @@ class RegisterSerializer(serializers.Serializer):
         try:
             platform = Platform.objects.get(id=value, is_active=True)
         except Platform.DoesNotExist:
-            raise serializers.ValidationError('Plataforma no encontrada o inactiva.')
+            raise serializers.ValidationError("Plataforma no encontrada o inactiva.")
         return value
 
     def validate_email(self, value):
@@ -77,15 +78,15 @@ class RegisterSerializer(serializers.Serializer):
         """
         from django.contrib.auth.hashers import make_password
 
-        email = validated_data['email']
-        password = validated_data['password']
-        platform_id = validated_data['platform_id']
+        email = validated_data["email"]
+        password = validated_data["password"]
+        platform_id = validated_data["platform_id"]
 
         platform = Platform.objects.get(id=platform_id)
 
         if UserPlatform.objects.filter(email=email, platform=platform).exists():
             raise serializers.ValidationError(
-                {'email': 'Este email ya está registrado en esta plataforma.'}
+                {"email": "Este email ya está registrado en esta plataforma."}
             )
 
         user_platform = UserPlatform.objects.create(
@@ -112,15 +113,15 @@ class PlatformTokenObtainPairSerializer(serializers.Serializer):
         """
         Validate credentials and generate token with platform_id.
         """
-        email = attrs.get('email', '').lower().strip()
-        password = attrs.get('password')
-        platform_id = attrs.get('platform_id')
+        email = attrs.get("email", "").lower().strip()
+        password = attrs.get("password")
+        platform_id = attrs.get("platform_id")
 
         try:
             platform = Platform.objects.get(id=platform_id, is_active=True)
         except Platform.DoesNotExist:
             raise serializers.ValidationError(
-                {'platform_id': 'Plataforma no encontrada o inactiva.'}
+                {"platform_id": "Plataforma no encontrada o inactiva."}
             )
 
         try:
@@ -131,33 +132,32 @@ class PlatformTokenObtainPairSerializer(serializers.Serializer):
             )
         except UserPlatform.DoesNotExist:
             raise serializers.ValidationError(
-                {'email': 'Credenciales inválidas o usuario inactivo.'}
+                {"email": "Credenciales inválidas o usuario inactivo."}
             )
 
         from django.contrib.auth.hashers import check_password
 
         if not check_password(password, user_platform.password):
-            raise serializers.ValidationError({'password': 'Credenciales inválidas.'})
+            raise serializers.ValidationError({"password": "Credenciales inválidas."})
 
         user_platform.last_login = timezone.now()
-        user_platform.save(update_fields=['last_login'])
+        user_platform.save(update_fields=["last_login"])
 
         from rest_framework_simplejwt.tokens import RefreshToken
 
         refresh = RefreshToken()
-        refresh['user_id'] = user_platform.id
-        refresh['platform_id'] = platform_id
-        refresh['email'] = user_platform.email
+        refresh["user_id"] = user_platform.id
+        refresh["platform_id"] = platform_id
+        refresh["email"] = user_platform.email
 
         access = refresh.access_token
-        access['user_id'] = user_platform.id
-        access['platform_id'] = platform_id
-        access['email'] = user_platform.email
+        access["user_id"] = user_platform.id
+        access["platform_id"] = platform_id
+        access["email"] = user_platform.email
 
         data = {
-            'refresh': str(refresh),
-            'access': str(access),
+            "refresh": str(refresh),
+            "access": str(access),
         }
 
         return data
-

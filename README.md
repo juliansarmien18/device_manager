@@ -40,7 +40,7 @@ make run        # Ejecutar servidor
    ```bash
    # Windows (PowerShell)
    powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
-   
+
    # Linux/Mac
    curl -LsSf https://astral.sh/uv/install.sh | sh
    ```
@@ -55,7 +55,7 @@ make run        # Ejecutar servidor
    ```bash
    # En Windows PowerShell
    $env:DJANGO_SETTINGS_MODULE="devices_manager.settings.dev"
-   
+
    # En Linux/Mac
    export DJANGO_SETTINGS_MODULE=devices_manager.settings.dev
    ```
@@ -493,4 +493,3 @@ Este proyecto es una prueba técnica.
 ## Autor
 
 Desarrollado siguiendo principios SOLID y mejores prácticas de Django/DRF.
-

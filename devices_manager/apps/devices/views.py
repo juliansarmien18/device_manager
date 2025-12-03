@@ -1,13 +1,14 @@
 """
 Device views.
 """
-from rest_framework import viewsets, filters, status
-from rest_framework.decorators import action
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+
 from apps.devices.models import Device
 from apps.devices.serializers import DeviceSerializer
 from apps.platforms.models import UserPlatform
+from rest_framework import filters, status, viewsets
+from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
 
 class DeviceViewSet(viewsets.ModelViewSet):
@@ -19,9 +20,9 @@ class DeviceViewSet(viewsets.ModelViewSet):
     serializer_class = DeviceSerializer
     permission_classes = [IsAuthenticated]
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
-    search_fields = ['name', 'ip_address']
-    ordering_fields = ['name', 'created_at', 'updated_at']
-    ordering = ['-created_at']
+    search_fields = ["name", "ip_address"]
+    ordering_fields = ["name", "created_at", "updated_at"]
+    ordering = ["-created_at"]
 
     def get_queryset(self):
         """
@@ -41,9 +42,9 @@ class DeviceViewSet(viewsets.ModelViewSet):
         """
         user_platform = self.request.user
         if not isinstance(user_platform, UserPlatform):
-            raise ValueError('Usuario no válido para crear dispositivo.')
-        
-        serializer.context['user_platform'] = user_platform
+            raise ValueError("Usuario no válido para crear dispositivo.")
+
+        serializer.context["user_platform"] = user_platform
         serializer.save()
 
     def perform_update(self, serializer):
@@ -56,7 +57,7 @@ class DeviceViewSet(viewsets.ModelViewSet):
         else:
             serializer.save()
 
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=["get"])
     def my_devices(self, request):
         """
         Custom endpoint to get current user's devices.
@@ -64,7 +65,7 @@ class DeviceViewSet(viewsets.ModelViewSet):
         user_platform = request.user
         if not isinstance(user_platform, UserPlatform):
             return Response(
-                {'error': 'Usuario no válido.'},
+                {"error": "Usuario no válido."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
@@ -75,7 +76,7 @@ class DeviceViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(devices, many=True)
         return Response(serializer.data)
 
-    @action(detail=True, methods=['patch'])
+    @action(detail=True, methods=["patch"])
     def toggle_active(self, request, pk=None):
         """
         Toggle device active status.
@@ -88,4 +89,3 @@ class DeviceViewSet(viewsets.ModelViewSet):
         device.save()
         serializer = self.get_serializer(device)
         return Response(serializer.data)
-

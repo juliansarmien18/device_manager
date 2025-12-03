@@ -1,9 +1,10 @@
 """
 Tests for core models.
 """
-from django.test import TestCase
-from django.contrib.auth import get_user_model
+
 from apps.core.models import BaseModel
+from django.contrib.auth import get_user_model
+from django.test import TestCase
 
 
 class BaseModelTest(TestCase):
@@ -16,4 +17,3 @@ class BaseModelTest(TestCase):
         Test that BaseModel is abstract.
         """
         self.assertTrue(BaseModel._meta.abstract)
-

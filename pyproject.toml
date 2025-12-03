@@ -50,4 +50,3 @@ python_files = ["tests.py", "test_*.py", "*_tests.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
 addopts = "--cov=devices_manager --cov-report=html --cov-report=term-missing"
-
