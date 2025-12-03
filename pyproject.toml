@@ -1,0 +1,53 @@
+[project]
+name = "devices-manager"
+version = "0.1.0"
+description = "API Django con DRF para gestión de dispositivos multi-plataforma con JWT"
+requires-python = ">=3.11"
+dependencies = [
+    "django>=5.2.9",
+    "djangorestframework>=3.15.0",
+    "djangorestframework-simplejwt>=5.3.0",
+    "django-currentuser>=0.5.3",
+    "django-cors-headers>=4.3.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-django>=4.7.0",
+    "pytest-cov>=4.1.0",
+    "black>=23.12.0",
+    "isort>=5.13.0",
+    "flake8>=6.1.0",
+    "mypy>=1.7.0",
+    "pre-commit>=3.5.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.black]
+line-length = 100
+target-version = ['py311']
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+line_length = 100
+skip_gitignore = true
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "devices_manager.settings.dev"
+python_files = ["tests.py", "test_*.py", "*_tests.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "--cov=devices_manager --cov-report=html --cov-report=term-missing"
+

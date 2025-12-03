@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: py manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./devices_manager:/app/devices_manager
+      - ./db.sqlite3:/app/db.sqlite3
+    ports:
+      - "8000:8000"
+    environment:
+      - DJANGO_SETTINGS_MODULE=devices_manager.settings.dev
+    stdin_open: true
+    tty: true
+
