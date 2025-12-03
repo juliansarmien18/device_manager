@@ -23,18 +23,7 @@ API desarrollada con Django y Django REST Framework (DRF) que implementa autenti
 
 ## Instalación
 
-### Opción 1: Con Make (Más Rápido)
-
-Si tienes `make` instalado:
-
-```bash
-make install    # Instalar dependencias
-make migrate    # Ejecutar migraciones
-make test-data  # Crear datos de prueba (opcional)
-make run        # Ejecutar servidor
-```
-
-### Opción 2: Con UV (Recomendado)
+### Opción 1: Con UV (Recomendado)
 
 1. **Instalar UV** (si no lo tienes):
    ```bash
@@ -76,7 +65,7 @@ make run        # Ejecutar servidor
    py manage.py runserver
    ```
 
-### Opción 3: Con Docker Compose
+### Opción 2: Con Docker Compose
 
 1. **Construir y ejecutar**:
    ```bash
@@ -391,10 +380,6 @@ curl -X POST http://localhost:8000/api/devices/ \
 ## Ejecutar Tests
 
 ```bash
-# Con Make
-make test
-
-# O manualmente
 cd devices_manager
 py -m pytest
 
