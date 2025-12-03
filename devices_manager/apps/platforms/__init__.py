@@ -1,0 +1,4 @@
+"""
+Platforms app.
+"""
+
