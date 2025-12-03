@@ -1,0 +1,3 @@
+"""
+Platforms tests package.
+"""
