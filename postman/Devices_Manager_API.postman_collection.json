@@ -1,0 +1,330 @@
+{
+	"info": {
+		"_postman_id": "devices-manager-api",
+		"name": "Devices Manager API",
+		"description": "Colección completa de endpoints para Devices Manager API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Listar Plataformas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/platforms/",
+							"host": ["{{base_url}}"],
+							"path": ["platforms", ""]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Registrar Usuario",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"nuevo_usuario@example.com\",\n    \"password\": \"password123\",\n    \"platform_id\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/register/",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "register", ""]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login (Obtener Token)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.environment.set(\"access_token\", jsonData.access);",
+									"    pm.environment.set(\"refresh_token\", jsonData.refresh);",
+									"    console.log(\"Token guardado automáticamente\");",
+									"}",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has access token\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.access).to.exist;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"usuario1@example.com\",\n    \"password\": \"password123\",\n    \"platform_id\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login/",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "login", ""]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Devices",
+			"item": [
+				{
+					"name": "Listar Mis Dispositivos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/devices/",
+							"host": ["{{base_url}}"],
+							"path": ["devices", ""]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Mis Dispositivos (Endpoint Alternativo)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/devices/my_devices/",
+							"host": ["{{base_url}}"],
+							"path": ["devices", "my_devices", ""]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Dispositivo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Mi Nuevo Dispositivo\",\n    \"ip_address\": \"192.168.1.100\",\n    \"is_active\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/devices/",
+							"host": ["{{base_url}}"],
+							"path": ["devices", ""]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Detalle de Dispositivo",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/devices/1/",
+							"host": ["{{base_url}}"],
+							"path": ["devices", "1", ""]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Dispositivo",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Dispositivo Actualizado\",\n    \"is_active\": false\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/devices/1/",
+							"host": ["{{base_url}}"],
+							"path": ["devices", "1", ""]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Toggle Estado Activo",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/devices/1/toggle_active/",
+							"host": ["{{base_url}}"],
+							"path": ["devices", "1", "toggle_active", ""]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Dispositivo",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/devices/1/",
+							"host": ["{{base_url}}"],
+							"path": ["devices", "1", ""]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Dispositivos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/devices/?search=Dispositivo",
+							"host": ["{{base_url}}"],
+							"path": ["devices", ""],
+							"query": [
+								{
+									"key": "search",
+									"value": "Dispositivo"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ordenar Dispositivos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/devices/?ordering=-created_at",
+							"host": ["{{base_url}}"],
+							"path": ["devices", ""],
+							"query": [
+								{
+									"key": "ordering",
+									"value": "-created_at"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000/api",
+			"type": "string"
+		},
+		{
+			"key": "access_token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
