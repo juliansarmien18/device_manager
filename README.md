@@ -25,7 +25,7 @@ API desarrollada con Django y Django REST Framework (DRF) que implementa autenti
 
 ### Opción 1: Con UV (Recomendado)
 
-1. **Instalar UV** (si no lo tienes):
+1. **Instalar UV** (si no está instalado):
    ```bash
    # Windows (PowerShell)
    powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
@@ -100,14 +100,14 @@ pre-commit install
 
 ### Crear Plataformas
 
-Puedes crear plataformas de dos formas:
+Crear plataformas de dos formas:
 
 #### Opción 1: Desde el Admin de Django
 
-1. Accede a `http://localhost:8000/admin/`
-2. Inicia sesión con el superusuario
-3. Ve a "Platforms" → "Add Platform"
-4. Crea plataformas como "Plataforma A", "Plataforma B", etc.
+1. Acceder a `http://localhost:8000/admin/`
+2. Iniciar sesión con el superusuario
+3. Ir a "Platforms" → "Add Platform"
+4. Crear plataformas como "Plataforma A", "Plataforma B", etc.
 
 #### Opción 2: Desde la Shell de Django
 
@@ -343,7 +343,7 @@ curl -X POST http://localhost:8000/api/auth/login/ \
   }'
 ```
 
-Guarda el `access` token de la respuesta.
+Guardar el `access` token de la respuesta.
 
 ### 3. Listar Dispositivos
 
@@ -373,9 +373,9 @@ curl -X POST http://localhost:8000/api/devices/ \
    - `access_token`: (se actualizará después del login)
 
 3. **Flujo de trabajo**:
-   - Primero, registra un usuario o inicia sesión
-   - Copia el `access` token de la respuesta
-   - Úsalo en el header `Authorization: Bearer <token>` para las peticiones protegidas
+   - Primero, registrar un usuario o iniciar sesión
+   - Copiar el `access` token de la respuesta
+   - Usarlo en el header `Authorization: Bearer <token>` para las peticiones protegidas
 
 ## Ejecutar Tests
 
@@ -459,22 +459,14 @@ Todos los modelos heredan de `BaseModel` que incluye:
 ## Troubleshooting
 
 ### Error: "ModuleNotFoundError: No module named 'apps'"
-Asegúrate de estar en el directorio `devices_manager` al ejecutar los comandos.
+Asegurarse de estar en el directorio `devices_manager` al ejecutar los comandos.
 
 ### Error: "DJANGO_SETTINGS_MODULE not set"
-Configura la variable de entorno:
+Configurar la variable de entorno:
 ```bash
 # Windows PowerShell
 $env:DJANGO_SETTINGS_MODULE="devices_manager.settings.dev"
 ```
 
 ### Error: "Token does not contain platform_id"
-Asegúrate de usar el token obtenido del endpoint de login, no un token generado manualmente.
-
-## Licencia
-
-Este proyecto es una prueba técnica.
-
-## Autor
-
-Desarrollado siguiendo principios SOLID y mejores prácticas de Django/DRF.
+Asegurarse de usar el token obtenido del endpoint de login, no un token generado manualmente.
